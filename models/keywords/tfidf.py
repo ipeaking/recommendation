@@ -50,10 +50,10 @@ class Segment(object):
         # 基于TF-IDF算法的关键词抽取   基于 TextRank 算法的关键词抽取   algorithm  [ˈælɡərɪðəm]   算法 
 
         if algorithm == 'tfidf':
-            tags = jieba.analyse.extract_tags(text, withWeight=False) #jieba提取关键字,withWeight 是否返回每个关键词的权重
+            tags = jieba.analyse.extract_tags(text, withWeight=True) #jieba提取关键字,withWeight 是否返回每个关键词的权重
             return tags
         elif algorithm == 'textrank':
-            textrank = jieba.analyse.textrank(text, withWeight=False, allowPOS=allow_pos)  #allowPOS是允许的提取的词性，默认为allowPOS=‘ns’, ‘n’, ‘vn’, ‘v’，提取地名、名词、动名词、动词
+            textrank = jieba.analyse.textrank(text, withWeight=True, allowPOS=allow_pos)  #allowPOS是允许的提取的词性，默认为allowPOS=‘ns’, ‘n’, ‘vn’, ‘v’，提取地名、名词、动名词、动词
             return textrank
 
 
@@ -62,6 +62,12 @@ if __name__ == '__main__':
     text = "孙新军介绍，北京的垃圾处理能力相对比较宽松，全市有44座处理设施，总设计能力是每天处理3.2万吨，焚烧场11座，处理能力是1.67万吨每天，生化设施23座，日处理能力达8130吨，包括餐饮单位厨余垃圾日处理能力2380吨，家庭厨余垃圾日处理能力5750吨。"
     textrank = seg.extract_keyword(text,algorithm='textrank', use_pos=True)[:10]
     tfidfs = seg.extract_keyword(text,algorithm='tfidf', use_pos=True)[:10]
-    print(textrank)
-    print(tfidfs)
-    print(set(textrank) & set(tfidfs))
+    result_textrank = []
+    result_tfidf = []
+    for i in textrank:
+        result_textrank.append(i[0])
+    for i in tfidfs:
+        result_tfidf.append(i[0])
+    print(result_textrank)
+    print(result_tfidf)
+    print(set(result_textrank) & set(result_tfidf))

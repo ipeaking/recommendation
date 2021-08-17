@@ -37,7 +37,8 @@ import re
 
 class ContentLabel(object):
     def __init__(self):
-        self.seg = Segment(stopword_files=[], userdict_files=[])
+        self.seg = Segment(stopword_files=['data/stopwords/1.txt', 'data/stopwords/2.txt', 'data/stopwords/3.txt',
+                                           'data/stopwords/4.txt'], userdict_files=[])
         self.engine = Mysql()
         self.sesion = self.engine._DBSession()
         self.mongo = MongoDB(db='recommendation')
