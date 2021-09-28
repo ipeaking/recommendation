@@ -29,6 +29,7 @@
 import pymongo
 import datetime
 
+
 class MongoDB(object):
     def __init__(self, db):
         mongo_client = self._connect('127.0.0.1', '27017', '', '', db)
