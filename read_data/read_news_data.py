@@ -51,7 +51,7 @@ class NewsData(object):
     def cal_score(self):
         result = list()
         score_dict = dict()
-        data = self.read_collection.find()
+        data = self.likes_collection.find()
         for info in data:
             #这里面做分数的计算
             score_dict.setdefault(info['user_id'], {})
@@ -61,12 +61,35 @@ class NewsData(object):
 
             exist_count = 0
             # 去每一个表里面进行查询，如果存在数据，就加上相应的得分
+            read_count = self.read_collection.find(query).count()
+            if read_count > 0:
+                score_dict[info['user_id']][info['content_id']] += 1
+                exist_count += 1
 
-            # ["str(1),str(8),str(6145ec828451a2b8577df7b3)"]
-            # result.append()
-            pass
+            like_count = self.likes_collection.find(query).count()
+            if like_count > 0:
+                score_dict[info['user_id']][info['content_id']] += 2
+                exist_count += 1
 
-        pass
+            collection_count = self.collection.find(query).count()
+            if collection_count > 0:
+                score_dict[info['user_id']][info['content_id']] += 2
+                exist_count += 1
+
+            if exist_count == 2:
+                score_dict[info['user_id']][info['content_id']] += 1
+            elif exist_count == 3:
+                score_dict[info['user_id']][info['content_id']] += 2
+            else:
+                pass
+
+            result.append(str(info['user_id']) + ',' + str(score_dict[info['user_id']][info['content_id']]) + ',' + str(info['content_id']))
+
+        self.to_csv(result, '../data/news_score/news_log.csv')
+
+    def rec_user(self):
+        data = self.likes_collection.distinct('user_id')
+        return data
 
     def to_csv(self, user_score_content, res_file):
         if not os.path.exists('../data/news_score'):
@@ -76,9 +99,10 @@ class NewsData(object):
             for info in user_score_content:
                 wf.write(info + '\n')
 
-        print(len(user_score_content))
+        # print(len(user_score_content))
 
 
 if __name__ == '__main__':
     news_data = NewsData()
-    news_data.cal_score()
+    data = news_data.rec_user()
+    print(data)
