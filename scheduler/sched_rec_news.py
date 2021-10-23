@@ -66,7 +66,6 @@ class SchedRecNews(object):
         self.to_redis(user_id, data)
         print("item_cf to redis finish...")
 
-
     def to_redis(self, user_id, rec_conent_score):
         rec_item_id = "rec_item:" + str(user_id)
         res = dict()
