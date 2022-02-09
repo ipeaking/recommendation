@@ -1,4 +1,4 @@
-user_id,item_id,age,gender,city,timestamp,rating
+﻿user_id,item_id,age,gender,city,timestamp,rating
 1,5fa359ed0574d6367aaf1f69,18,male,珠海,2020-09-01 00:03:09,5
 1,5fa35b56ac0ea832d2bc1476,18,male,珠海,2020-09-01 00:43:24,2
 1,5fa35b23ac0ea832d2bc12c3,18,male,珠海,2020-09-01 00:51:24,2

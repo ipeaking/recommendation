@@ -43,10 +43,10 @@ def gen_data_set(data, negsample=0):
 
         if negsample > 0:    #负样本
             candidate_set = list(set(item_ids) - set(pos_list))   #去掉用户看过的item项目
-            neg_list = np.random.choice(candidate_set, size=len(pos_list)* negsample, replace=True)  #随机选择负采样样本
+            neg_list = np.random.choice(candidate_set, size=len(pos_list) * negsample, replace=True)  #随机选择负采样样本
         for i in range(1, len(pos_list)):
             if i != len(pos_list) - 1:
-                train_set.append((reviewrID, hist[::-1], pos_list[i], 1, len(hist[:: -1], rating_list[i])))  #训练集和测试集划分  [::-1]从后玩前数
+                train_set.append((reviewrID, hist[::-1], pos_list[i], 1, len(hist[:: -1]), rating_list[i]))  #训练集和测试集划分  [::-1]从后玩前数
                 for negi in range(negsample):
                     train_set.append((reviewrID, hist[::-1], neg_list[i * negsample + negi], 0, len(hist[::-1])))
             else:
@@ -54,7 +54,7 @@ def gen_data_set(data, negsample=0):
 
     random.shuffle(train_set)     #打乱数据集
     random.shuffle(test_set)
-    return  train_set, test_set
+    return train_set, test_set
 
 def gen_model_input(train_set, user_profile, seq_max_len):
     train_uid = np.array([line[0] for line in train_set])
